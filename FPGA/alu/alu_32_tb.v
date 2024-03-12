@@ -11,6 +11,7 @@ reg [WIDTH-1:0] ans;
 wire z_out;
 wire v_out;
 wire n_out;
+wire cmp_out;
 wire [WIDTH-1:0] result;
 
 alu_32 #(.WIDTH(32)) alu0 (
@@ -20,7 +21,8 @@ alu_32 #(.WIDTH(32)) alu0 (
   .out(result),
   .z(z_out),
   .v(v_out),
-  .n(n_out)
+  .n(n_out),
+  .cmp_out(cmp_out)
 );
 
 initial begin

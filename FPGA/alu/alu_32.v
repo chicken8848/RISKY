@@ -54,7 +54,7 @@ wire z_out;
 wire v_out;
 wire n_out;
 
-assign cmp_out = cmp;
+assign cmp_out = slt;
 assign z = z_out;
 assign v = v_out;
 assign n = n_out;
