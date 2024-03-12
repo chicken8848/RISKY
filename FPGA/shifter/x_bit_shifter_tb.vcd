@@ -1,0 +1,42 @@
+$date
+	Tue Feb 20 14:01:33 2024
+$end
+$version
+	Icarus Verilog
+$end
+$timescale
+	1ps
+$end
+$scope module x_bit_shifter_tb $end
+$var wire 8 ! w_result [7:0] $end
+$var reg 1 " pad $end
+$var reg 8 # reg1 [7:0] $end
+$var reg 1 $ shift $end
+$scope module shl0 $end
+$var wire 8 % a [7:0] $end
+$var wire 1 " pad $end
+$var wire 1 $ shift $end
+$var wire 8 & out [7:0] $end
+$var wire 8 ' alt [7:0] $end
+$upscope $end
+$upscope $end
+$scope module x_bit_shifter_tb $end
+$scope module shl0 $end
+$upscope $end
+$upscope $end
+$enddefinitions $end
+#0
+$dumpvars
+b11110000 '
+b11110000 &
+b1111 %
+1$
+b1111 #
+0"
+b11110000 !
+$end
+#10
+b1111 !
+b1111 &
+0$
+#100000
