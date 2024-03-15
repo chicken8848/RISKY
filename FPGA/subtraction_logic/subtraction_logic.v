@@ -10,15 +10,15 @@ always @ (opcode or funct3 or funct7) begin
     7'b1100011: out = 1'b1;
     7'b0110011: begin
       if (funct7[5] == 1 | funct3[1] == 1) 
-      out = 1;
+      out <= 1;
       else
-      out = 0;
+      out <= 0;
     end
     7'b0010011: begin
       if (funct3[1] == 1)
-      out = 1;
+      out <= 1;
       else
-      out = 0;
+      out <= 0;
   end
 endcase
 end

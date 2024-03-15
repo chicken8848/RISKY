@@ -35,6 +35,7 @@ wire [WIDTH-1:0] and_;
 wire [6:0] funct7;
 wire [2:0] funct3;
 wire [11:0] imm;
+wire [WIDTH-1:0] imm_fr;
 wire imm_sel;
 wire cmp;
 
@@ -66,13 +67,16 @@ assign and_ = b_imm & a;
 assign xor_ = b_imm ^ a;
 assign or_ = b_imm | a;
 
+// sign extended immediate
+x_bit_mux_2 #(.WIDTH(WIDTH)) seimm_sel (.a({{20{1'b0}}, imm}), .b({{20{1'b1}}, imm}), 
+    .s(imm[11]), .out(imm_fr));
 // select the shift amount between imm and b
 x_bit_mux_2 #(.WIDTH(5)) shamt_sel (.a(b_imm_shift), .b(b[4:0]), .s(inst[5]), .out(shft_in));
 // Select between multiplier and adder subtractor
 x_bit_mux_2 #(.WIDTH(WIDTH)) add_mul_sel (.a(adder_sub_result), .b(mu_mul[31:0]),
      .s(add_mul_selector), .out(add_sub_mul));
 // select between b or imm[11:0]
-x_bit_mux_2 #(.WIDTH(WIDTH)) b_imm_sel (.a(b), .b({{20{1'b0}}, imm}), 
+x_bit_mux_2 #(.WIDTH(WIDTH)) b_imm_sel (.a(b), .b(imm_fr), 
     .s(imm_sel), .out(b_imm));
 // select between sltu / mulhu
 x_bit_mux_2 #(.WIDTH(WIDTH)) sltu_mulhu_sel (.a({{31{1'b0}},slt}), .b(mu_mul[63:32]), .s(inst[25]), .out(sltu_mulhu));
