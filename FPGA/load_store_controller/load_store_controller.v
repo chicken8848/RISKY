@@ -1,5 +1,10 @@
 `include "../sign_extender/sign_extender.v"
+`include "../muxes/x_bit_mux_2.v"
+`include "../muxes/x_bit_mux_4.v"
+`include "../muxes/x_bit_mux_8.v"
 
+`include "../muxes/mux_2.v"
+`include "../muxes/mux_4.v"
 module load_store_controller (
   input [31:0] aluin,
   input [31:0] mrdin,
@@ -21,7 +26,7 @@ module load_store_controller (
 wire [31:0] se_lb;
 wire [31:0] se_lh;
 wire [31:0] lw;
-wire [31:0] load_out
+wire [31:0] load_out;
 
 wire [6:0] opcode;
 wire [11:0] imm;
@@ -39,28 +44,28 @@ assign h_out = reg2_data[15:0];
 assign b_out = reg2_data[7:0];
 
 // Select immediate from the instruction
-x_bit_mux_2 #(.WIDTH(32)) mux0 (.a(inst[31:20]), .b({inst[31:25], inst[11:7]}),
+x_bit_mux_2 #(.WIDTH(12)) mux0 (.a(inst[31:20]), .b({inst[31:25], inst[11:7]}),
   .s(load_store_immediate_select), .out(imm));
 
 // sign extend the immediate
 sign_extender #(.WIDTH(32), .EXTENSION(20)) se0 (.imm(imm), .se_out(se_imm));
 // sign extend LB
-sign_extender #(.WIDTH(32) .EXTENSION(24)) se1 (.imm(mrdin[7:0]), .se_out(se_lb));
+sign_extender #(.WIDTH(32), .EXTENSION(24)) se1 (.imm(mrdin[7:0]), .se_out(se_lb));
 // sign extend LH
-sign_extender #(.WIDTH(32) .EXTENSION(16)) se1 (.imm(mrdin[15:0]), .se_out(se_lh));
+sign_extender #(.WIDTH(32), .EXTENSION(16)) se2 (.imm(mrdin[15:0]), .se_out(se_lh));
 
 assign addr_out = se_imm + reg1_data;
 
 // choose word out
 x_bit_mux_4 #(.WIDTH(32)) control_unit (
-  .a({inst[31:12], {12{0}}}), .b(load_out), .c(reg1_data), .d(aluin), 
+  .a({inst[31:12], {12{1'b0}}}), .b(load_out), .c(reg1_data), .d(aluin), 
   .s0(control[0]), .s1(control[1]), .out(w_out)
 );
 
 // choose the load out
-x_bit_mux_8 #(.WIDTH(32)) load_select (.a(se_lb), .b(se_lh), .c(lw), .d({32{0}}), 
-  .e({{24{1'b0}}, mrdin[7:0]}), .f({{16{1'b0}}, mrdin[15:0]}), .g({32{0}}), 
-  .h({32{0}}), .s0(funct3[0]), .s1(funct3[1]), .s2(funct3[2]), .out(load_out));
+x_bit_mux_8 #(.WIDTH(32)) load_select (.a(se_lb), .b(se_lh), .c(lw), .d({32{1'b0}}), 
+  .e({{24{1'b0}}, mrdin[7:0]}), .f({{16{1'b0}}, mrdin[15:0]}), .g({32{1'b0}}), 
+  .h({32{1'b0}}), .s0(funct3[0]), .s1(funct3[1]), .s2(funct3[2]), .out(load_out));
 
 
 always @ (opcode) begin
@@ -105,6 +110,7 @@ always @ (opcode) begin
       wr <= 0;
       control <= 2'b00;
       load_store_immediate_select = 1'b0;
+    end
   endcase
 
 end

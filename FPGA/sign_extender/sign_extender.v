@@ -3,7 +3,7 @@ module sign_extender #(
   parameter EXTENSION = 20
 ) (
   input [WIDTH-EXTENSION-1:0] imm,
-  output se_out
+  output [WIDTH-1:0] se_out
 );
 
 wire extension_select;
