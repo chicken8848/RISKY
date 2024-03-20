@@ -11,6 +11,7 @@ module load_store_controller (
   input [31:0] inst,
   input [31:0] reg1_data, // mem addr
   input [31:0] reg2_data, // content to store
+  input [31:0] pc,
   output [31:0] w_out,
   output [15:0] h_out,
   output [7:0] b_out,
@@ -27,6 +28,8 @@ wire [31:0] se_lb;
 wire [31:0] se_lh;
 wire [31:0] lw;
 wire [31:0] load_out;
+wire [31:0] w_imm;
+wire jal_sel;
 
 wire [6:0] opcode;
 wire [11:0] imm;
@@ -42,6 +45,8 @@ assign funct3 = inst[14:12];
 assign lw = mrdin;
 assign h_out = reg2_data[15:0];
 assign b_out = reg2_data[7:0];
+
+assign jal_sel = opcode == 7'b1101111 | opcode == 7'b1100111 ? 1 : 0;
 
 // Select immediate from the instruction
 x_bit_mux_2 #(.WIDTH(12)) mux0 (.a(inst[31:20]), .b({inst[31:25], inst[11:7]}),
@@ -59,8 +64,10 @@ assign addr_out = se_imm + reg1_data;
 // choose word out
 x_bit_mux_4 #(.WIDTH(32)) control_unit (
   .a({inst[31:12], {12{1'b0}}}), .b(load_out), .c(reg1_data), .d(aluin), 
-  .s0(control[0]), .s1(control[1]), .out(w_out)
+  .s0(control[0]), .s1(control[1]), .out(w_imm)
 );
+// implement JAL
+x_bit_mux_2 #(.WIDTH(32)) jsel (.a(w_imm), .b(pc + d4), .out(w_out));
 
 // choose the load out
 x_bit_mux_8 #(.WIDTH(32)) load_select (.a(se_lb), .b(se_lh), .c(lw), .d({32{1'b0}}), 
