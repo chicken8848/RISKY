@@ -29,13 +29,13 @@ wire [31:0] se_lh;
 wire [31:0] lw;
 wire [31:0] load_out;
 wire [31:0] w_imm;
-wire jal_sel;
 
 wire [6:0] opcode;
 wire [11:0] imm;
 wire [2:0] funct3;
 reg [1:0] control;
 reg load_store_immediate_select;
+reg jal_sel;
 
 wire [31:0] se_imm;
 wire [31:0] addr_out;
@@ -46,7 +46,6 @@ assign lw = mrdin;
 assign h_out = reg2_data[15:0];
 assign b_out = reg2_data[7:0];
 
-assign jal_sel = opcode == 7'b1101111 | opcode == 7'b1100111 ? 1 : 0;
 
 // Select immediate from the instruction
 x_bit_mux_2 #(.WIDTH(12)) mux0 (.a(inst[31:20]), .b({inst[31:25], inst[11:7]}),
@@ -79,44 +78,64 @@ always @ (opcode) begin
   case (opcode) 
     // LUI
     7'b0110111: begin
+      jal_sel <= 0;
       werf <= 1;
       wr <= 0;
       control <= 2'b00;
-      load_store_immediate_select = 1'b0;
+      load_store_immediate_select <= 1'b0;
     end
     // L
     7'b0000011: begin
+      jal_sel <= 0;
       werf <= 1;
       wr <= 0;
       control <= 2'b01;
-      load_store_immediate_select = 1'b0;
+      load_store_immediate_select <= 1'b0;
     end
     // S
     7'b0100011: begin
+      jal_sel <= 0;
       werf <= 0;
       wr <= 1;
       control <= 2'b10;
-      load_store_immediate_select = 1'b1;
+      load_store_immediate_select <= 1'b1;
     end
     // ALUI
     7'b0010011: begin
+      jal_sel <= 0;
       werf <= 1;
       wr <= 0;
       control <= 2'b11;
-      load_store_immediate_select = 1'b0;
+      load_store_immediate_select <= 1'b0;
     end
     // ALU
     7'b0110011: begin
+      jal_sel <= 0;
       werf <= 1;
       wr <= 0;
       control <= 2'b11;
-      load_store_immediate_select = 1'b0;
+      load_store_immediate_select <= 1'b0;
+    end
+    7'b1101111: begin
+      jal_sel <= 1'b1;
+      werf <= 1'b1;
+      wr <= 0;
+      control <= 2'b00;
+      load_store_immediate_select <= 1'b0;
+    end
+    7'b1100111: begin
+      jal_sel <= 1'b1;
+      werf <= 1'b1;
+      wr <= 0;
+      control <= 2'b00;
+      load_store_immediate_select <= 1'b0;
     end
     default: begin
+      jal_sel <= 0;
       werf <= 0;
       wr <= 0;
       control <= 2'b00;
-      load_store_immediate_select = 1'b0;
+      load_store_immediate_select <= 1'b0;
     end
   endcase
 
@@ -130,7 +149,7 @@ always @(funct3) begin
       h_e <= 0;
     end
     3'b001: begin
-      h_e = 1;
+      h_e <= 1;
       b_e <= 0;
       w_e <= 0;
     end
@@ -146,6 +165,11 @@ always @(funct3) begin
     end
     3'b101: begin
       h_e <= 1;
+      w_e <= 0;
+      b_e <= 0;
+    end
+    default: begin
+      h_e <= 0;
       w_e <= 0;
       b_e <= 0;
     end
