@@ -53,6 +53,7 @@ x_bit_mux_2 #(.WIDTH(12)) mux0 (.a(inst[31:20]), .b({inst[31:25], inst[11:7]}),
 
 // sign extend the immediate
 sign_extender #(.WIDTH(32), .EXTENSION(20)) se0 (.imm(imm), .se_out(se_imm));
+
 // sign extend LB
 sign_extender #(.WIDTH(32), .EXTENSION(24)) se1 (.imm(mrdin[7:0]), .se_out(se_lb));
 // sign extend LH
@@ -66,7 +67,7 @@ x_bit_mux_4 #(.WIDTH(32)) control_unit (
   .s0(control[0]), .s1(control[1]), .out(w_imm)
 );
 // implement JAL
-x_bit_mux_2 #(.WIDTH(32)) jsel (.a(w_imm), .b(pc + d4), .out(w_out));
+x_bit_mux_2 #(.WIDTH(32)) jsel (.a(w_imm), .b(pc + d4), .s(jal_sel), .out(w_out));
 
 // choose the load out
 x_bit_mux_8 #(.WIDTH(32)) load_select (.a(se_lb), .b(se_lh), .c(lw), .d({32{1'b0}}), 
