@@ -1,7 +1,3 @@
-`include "../sign_extender/sign_extender.v"
-`include "../muxes/x_bit_mux_2.v"
-`include "../muxes/mux_2.v"
-
 module brancher (
   input [31:0] inst,
   input [31:0] pc,
