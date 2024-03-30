@@ -18,6 +18,7 @@ wire [31:0] pcadd4;
 wire [31:0] pc_mux_out;
 wire [31:0] branch_out;
 wire [31:0] jump_out;
+wire [31:0] pc_in;
 wire [1:0] control;
 
 assign pcadd4 = pc_reg + 4;
@@ -36,9 +37,9 @@ x_bit_mux_4 #(.WIDTH(32)) pc_mux (
   .a(pcadd4), .b(branch_out), .c(jump_out), .d(ecall), .s0(control[0]), .s1(control[1]), .out(pc_mux_out)
 );
 // reset
-x_bit_mux_2 #(.WIDTH(32)) reset_sel (.a(pc_mux_out), .b({32{0}}), .s(reset), .out(pc_in))
+x_bit_mux_2 #(.WIDTH(32)) reset_sel (.a(pc_mux_out), .b({32{1'b0}}), .s(reset), .out(pc_in));
 
-always @(posedge clk) begin
+always @ (posedge clk) begin
   pc_reg <= pc_in;
 end
 

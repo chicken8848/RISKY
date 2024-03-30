@@ -1,10 +1,4 @@
 `include "../sign_extender/sign_extender.v"
-`include "../muxes/x_bit_mux_2.v"
-`include "../muxes/x_bit_mux_4.v"
-`include "../muxes/x_bit_mux_8.v"
-
-`include "../muxes/mux_2.v"
-`include "../muxes/mux_4.v"
 module load_store_controller (
   input [31:0] aluin,
   input [31:0] mrdin,

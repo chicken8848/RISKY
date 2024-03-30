@@ -1,5 +1,8 @@
-`include "../"
-
+`include "../alu/alu_32.v"
+`include "../regfile_controller/regfile_controller.v"
+`include "../regfile/regfile.v"
+`include "../pc_unit/pc_unit.v"
+`include "../load_store_controller/load_store_controller.v"
 module cpu (
   input [31:0] id,
   input [31:0] mrd,
@@ -21,9 +24,7 @@ wire [31:0] alu_data_bus;
 wire [4:0] ra1_bus;
 wire [4:0] ra2_bus;
 wire [4:0] wa_bus;
-wire [4:0] wd_bus;
 wire werf_bus;
-wire wd_bus;
 wire cmp_out_bus;
 
 assign data_out = data_bus;
@@ -36,7 +37,7 @@ pc_unit pcu0 (
   .clk(clk),
   .reset(reset),
   .pc(pc_bus),
-  .pc_4(),
+  .pc_4()
 );
 
 regfile_controller rf_c (
@@ -68,10 +69,10 @@ regfile rf0 (
   .ra_1(ra1_bus),
   .ra_2(ra2_bus),
   .rd_1(reg_data_1_bus),
-  .rd_2(reg_data_2_bus),
+  .rd_2(reg_data_2_bus)
 );
 
-alu alu_32 (
+alu_32 alu0 (
   .a(reg_data_1_bus),
   .b(reg_data_2_bus),
   .inst(id),
