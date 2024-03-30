@@ -13,14 +13,10 @@ module load_store_controller (
   input [31:0] reg2_data, // content to store
   input [31:0] pc,
   output [31:0] w_out,
-  output [15:0] h_out,
-  output [7:0] b_out,
   output [31:0] addr_out,
   output reg wr,
   output reg werf,
-  output reg b_e,
-  output reg h_e,
-  output reg w_e
+  output reg [15:0] wr_mask
 );
 
 // declare load signals
@@ -45,8 +41,6 @@ wire [31:0] addr_out;
 assign opcode = inst[6:0];
 assign funct3 = inst[14:12];
 assign lw = mrdin;
-assign h_out = reg2_data[15:0];
-assign b_out = reg2_data[7:0];
 assign u_imm = {inst[31:12], {12{1'b0}}};
 assign pc_added = pc_imm + pc;
 
@@ -69,7 +63,7 @@ x_bit_mux_2 #(.WIDTH(32)) u_or_4 (.a({{28{1'b0}},4'b0100}), .b(u_imm), .s(jal_se
 
 // choose word out
 x_bit_mux_8 #(.WIDTH(32)) control_unit (
-  .a(u_imm), .b(load_out), .c(reg1_data), .d(aluin), .e(pc_added), .f(pc_added), .g(), .h(),
+  .a(u_imm), .b(load_out), .c(reg2_data), .d(aluin), .e(pc_added), .f(pc_added), .g(), .h(),
   .s0(control[0]), .s1(control[1]), .s2(control[2]), .out(w_out)
 );
 
@@ -159,34 +153,22 @@ end
 always @(funct3) begin
   case (funct3)
     3'b000: begin
-      b_e <= 1;
-      w_e <= 0;
-      h_e <= 0;
+      wr_mask <= 16'b1111_1111_1111_1110;
     end
     3'b001: begin
-      h_e <= 1;
-      b_e <= 0;
-      w_e <= 0;
+      wr_mask <= 16'b1111_1111_1111_1100;
     end
     3'b010: begin
-      w_e <= 1;
-      b_e <= 0;
-      h_e <= 0;
+      wr_mask <= 16'b1111_1111_1111_0000;
     end
     3'b100: begin
-      b_e <= 1;
-      w_e <= 0;
-      h_e <= 0;
+      wr_mask <= 16'b1111_1111_1111_1110;
     end
     3'b101: begin
-      h_e <= 1;
-      w_e <= 0;
-      b_e <= 0;
+      wr_mask <= 16'b1111_1111_1111_1100;
     end
     default: begin
-      h_e <= 0;
-      w_e <= 0;
-      b_e <= 0;
+      wr_mask = 16'b1111_1111_1111_1111;
     end
   endcase
 end
