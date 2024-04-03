@@ -12,7 +12,7 @@ module pc_unit (
   output [31:0] pc_4
 );
 
-reg [31:0] pc_reg;
+reg [31:0] pc_reg = 32'b0;
 
 wire [31:0] pcadd4;
 wire [31:0] pc_mux_out;
@@ -23,6 +23,7 @@ wire [1:0] control;
 
 assign pcadd4 = pc_reg + 4;
 assign pc_4 = pcadd4;
+assign pc = pc_reg;
 
 // pc_sel control
 pc_sel pc_control (.inst(inst), .control(control));

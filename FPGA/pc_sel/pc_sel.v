@@ -13,6 +13,7 @@ always @(opcode) begin
     7'b1101111: control <= 2'b10;
     7'b1100111: control <= 2'b10;
     7'b1110011: control <= 2'b11;
+    default: control <= 2'b00;
   endcase
 end
 

@@ -26,6 +26,79 @@ alu_32 #(.WIDTH(32)) alu0 (
 );
 
 initial begin
+  // check branch
+  // BEQ
+  inst = 32'b0100_0000_0000_0000_0000_0000_0110_0011;
+  // BEQ True
+  reg1 = 'h0101_FFFF;
+  reg2 = 'h0101_FFFF;
+  ans = reg1 == reg2;
+  #10
+  // BEQ False
+  reg1 = 'h0A32_FFFF;
+  reg2 = 'h0476_FFFF;
+  ans = reg1 == reg2;
+  #10
+  // BNE
+  inst = 32'b0100_0000_0000_0000_0001_0000_0110_0011;
+  // BNE True
+  reg1 = 'h0A32_FFFF;
+  reg2 = 'h0476_FFFF;
+  ans = reg1 != reg2;
+  #10
+  // BNE False
+  reg1 = 'h0101_FFFF;
+  reg2 = 'h0101_FFFF;
+  ans = reg1 != reg2;
+  #10
+  // BLT
+  inst = 32'b0100_0000_0000_0000_0100_0000_0110_0011;
+  // BLT True
+  reg1 = 'h0000_0001;
+  reg2 = 'h0000_0002;
+  ans = reg1 < reg2;
+  #10
+  // BLT False
+  reg2 = 'h0000_0001;
+  reg1 = 'h0000_0002;
+  ans = reg1 < reg2;
+  #10
+  // BGE
+  inst = 32'b0100_0000_0000_0000_0101_0000_0110_0011;
+  // BGE True
+  reg2 = 'h0000_0001;
+  reg1 = 'h0000_0002;
+  ans = reg1 > reg2;
+  #10
+  // BGE False
+  reg1 = 'h0000_0001;
+  reg2 = 'h0000_0002;
+  ans = reg1 > reg2;
+  #10
+  // BLTU
+  inst = 32'b0100_0000_0000_0000_0110_0000_0110_0011;
+  // BLTU True
+  reg1 = 'hFFFF_FFF0;
+  reg2 = 'hFFFF_FFF1;
+  ans = reg1 < reg2;
+  #10
+  // BLTU False
+  reg1 = 'hFFFF_FFF1;
+  reg2 = 'hFFFF_FFF0;
+  ans = reg1 < reg2;
+  #10
+  // BGEU
+  inst = 32'b0100_0000_0000_0000_0111_0000_0110_0011;
+  // BGEU True
+  reg1 = 'hFFFF_FFF1;
+  reg2 = 'hFFFF_FFF0;
+  ans = reg1 > reg2;
+  #10
+  // BGEU False
+  reg1 = 'hFFFF_FFF0;
+  reg2 = 'hFFFF_FFF1;
+  ans = reg1 > reg2;
+  #10
   // add checks
   inst = 32'b0000_0000_0000_0000_0000_0000_0011_0011;
   // two positive numbers

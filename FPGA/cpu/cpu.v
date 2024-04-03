@@ -28,6 +28,7 @@ wire werf_bus;
 wire cmp_out_bus;
 
 assign data_out = data_bus;
+assign ia = pc_bus;
 
 pc_unit pcu0 (
   .reg1_data(reg_data_1_bus),

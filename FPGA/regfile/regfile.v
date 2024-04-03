@@ -15,6 +15,8 @@ module regfile #(
 
 reg [DATAWIDTH-1:0] regs [REGISTERS-1:0];
 
+initial regs[0] = 0;
+
 always @(posedge clk) begin
   if (werf) begin
     regs[wa] <= wd;

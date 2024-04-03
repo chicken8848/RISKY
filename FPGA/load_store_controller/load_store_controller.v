@@ -162,7 +162,7 @@ always @(funct3) begin
       wr_mask <= 16'b1111_1111_1111_1100;
     end
     default: begin
-      wr_mask = 16'b1111_1111_1111_1111;
+      wr_mask = 16'b1111_1111_1111_0000;
     end
   endcase
 end
