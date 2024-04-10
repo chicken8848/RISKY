@@ -1,5 +1,6 @@
 module ms_counter (
   input clk,
+  input rst,
   output reg tick_out // tick_out on ms
 );
 
