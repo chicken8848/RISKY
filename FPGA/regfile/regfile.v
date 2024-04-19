@@ -19,7 +19,8 @@ initial regs[0] = 0;
 
 always @(posedge clk) begin
   if (werf) begin
-    regs[wa] <= wd;
+    if (wa == 0) regs[wa] <= 0;
+    else regs[wa] <= wd;
   end
 end
 

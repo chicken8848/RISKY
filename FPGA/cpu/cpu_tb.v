@@ -1,7 +1,7 @@
 module cpu_tb();
 
 localparam WIDTH = 32;
-localparam DURATION = 1000;
+localparam DURATION = 10000;
 
 reg clk;
 reg reset;
@@ -32,7 +32,7 @@ cpu cpu0 (
 );
 
 initial begin
-  $readmemh("instruction_4.mem", test_memory);
+  $readmemh("instruction_8.mem", test_memory);
   clk <= 1'b0;
   irq <= 1'b0;
   reset = 1'b1;

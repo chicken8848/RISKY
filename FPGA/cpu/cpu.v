@@ -3,6 +3,7 @@
 `include "../regfile/regfile.v"
 `include "../pc_unit/pc_unit.v"
 `include "../load_store_controller/load_store_controller.v"
+
 module cpu (
   input [31:0] id,
   input [31:0] mrd,

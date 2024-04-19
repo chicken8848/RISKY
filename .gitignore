@@ -1,2 +1,7 @@
 .hdl_checker
 .hdl_checker/cache.json
+FPGA/top_module/top_tb.vcd
+FPGA/top_module/top_tb.out
+FPGA/vga/dm_tb.vcd
+FPGA/vga/dm_tb.out
+FPGA/vga/hardware.out
