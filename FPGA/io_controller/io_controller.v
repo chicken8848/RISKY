@@ -34,7 +34,7 @@ assign id = id_bus;
 
 display_module dm0 (
   .clk(clk),
-  .rst(rst),
+  .rst(reset),
   .data(data_in),
   .waddr(addr_in),
   .w_en(wr),
