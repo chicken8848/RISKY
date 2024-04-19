@@ -68,7 +68,7 @@ simple_dual_ram #(.SIZE(32), .DEPTH(4096)) rammy (
 .waddr(addr_bus[13:2]),
 .write_data(ram_wdata_in),
 .write_en(ram_en),
-.rclk(clk),
+.rclk(~clk),
 .raddr(addr_bus[13:2]),
 .read_data(mrd)
 );
