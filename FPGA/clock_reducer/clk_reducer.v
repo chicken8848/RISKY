@@ -8,7 +8,7 @@ module clk_reducer(master_clk, slow_clk, reset);
 	always@(posedge master_clk)
 	begin
 		if (reset) begin
-			q <= 1;
+			q <= 0;
 		end
 		q <= ~q; 
 		slow_clk <= q;
