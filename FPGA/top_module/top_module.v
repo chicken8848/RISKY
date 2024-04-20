@@ -36,12 +36,6 @@ reg state;
 
 assign rgb_out = rgb;
 
-clk_reducer slower (
-  .master_clk(clk),
-  .slow_clk(sclk),
-  .reset(reset)
-);
-
 x_bit_mux_2 #(.WIDTH(32)) io_boot (
   .a(ia_bus),
   .b(addr_bus),

@@ -1,4 +1,7 @@
 module mux_8(output out, input a, b, c, d, e, f, g, h, s0, s1, s2);
+wire s1bar;
+wire s0bar;
+wire s2bar;
 assign s1bar=~s1;
 assign s0bar=~s0;
 assign s2bar=~s2;

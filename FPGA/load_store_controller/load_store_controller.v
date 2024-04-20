@@ -30,7 +30,6 @@ reg load_store_immediate_select;
 reg jal_sel;
 
 wire [31:0] se_imm;
-wire [31:0] addr_out;
 
 assign opcode = inst[6:0];
 assign funct3 = inst[14:12];
