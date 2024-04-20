@@ -9,7 +9,11 @@
 module top_module(
   input clk,
   input reset,
-  output [7:0] rgb_out
+  input ps2c,
+  input ps2d,
+  output [7:0] rgb_out,
+  output hsync,
+  output vsync
 );
 
 localparam RAM_SIZE = 4096;
