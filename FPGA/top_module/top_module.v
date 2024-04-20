@@ -39,7 +39,7 @@ assign rgb_out = rgb;
 clk_reducer slower (
   .master_clk(clk),
   .slow_clk(sclk),
-  .reset
+  .reset(reset)
 );
 
 x_bit_mux_2 #(.WIDTH(32)) io_boot (
@@ -95,7 +95,7 @@ io_controller io (
   .id(id_bus),
   .wr(wr),
   .wr_mask(mask_bus),
-  .clk(~clk),
+  .clk(clk),
   .reset(reset),
   .irq(),
   .rgb(rgb),
@@ -119,7 +119,7 @@ always @(posedge clk or posedge reset) begin
   end 
 end
 
-always @(posedge clk) begin
+always @(posedge sclk) begin
   case (state)
     STATE_BOOT: begin
       if(done) begin

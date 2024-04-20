@@ -4,7 +4,7 @@ module game_rom(
     output reg [31:0] game_data
   );
   
-  always@(posedge clk) begin
+  always@(*) begin
     case(ia)
       
 

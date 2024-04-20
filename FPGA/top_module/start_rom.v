@@ -9,7 +9,7 @@ module start_up_rom (
   reg doneness = 0;
   assign done = doneness;
   
-  always@(posedge clk) begin
+  always@(*) begin
     case(instruction_address)
       32'h00: instruction_data <= 32'h40000113; // stack addi x2, x0, 1024
       32'h04: instruction_data <= 32'h00000413; // fp addi x8, x0, 0
@@ -23,9 +23,13 @@ module start_up_rom (
       32'h20: instruction_data <= 32'h00438393; // addi t2, t2 4 align 4
       32'h24: instruction_data <= 32'hfe53cae3; // blt t2, t0, -12
       32'h28: instruction_data <= 32'h00000013; // load first instruction address addi a0, x0, 0
+      32'h2c: begin
+        instruction_data <= 32'h000000e7; // jump jalr ra 0(x0)
+        doneness <= 1;
+      end
+
       default: begin
         doneness <= 1;
-        instruction_data <= 32'h000000e7; // jump jalr ra 0(x0)
       end
     endcase
   end
