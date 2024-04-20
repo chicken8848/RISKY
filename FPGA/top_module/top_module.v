@@ -68,14 +68,14 @@ simple_dual_ram #(.SIZE(32), .DEPTH(4096)) rammy (
 .waddr(addr_bus[13:2]),
 .write_data(ram_wdata_in),
 .write_en(ram_en),
-.rclk(clk),
+.rclk(~clk),
 .raddr(addr_bus[13:2]),
 .read_data(mrd)
 );
 
 
 cpu cpu0 (
-  .clk(sclk),
+  .clk(clk),
   .id(cpu_id_in),
   .mrd(mrd),
   .irq(),
@@ -119,7 +119,7 @@ always @(posedge clk or posedge reset) begin
   end 
 end
 
-always @(posedge sclk) begin
+always @(posedge clk) begin
   case (state)
     STATE_BOOT: begin
       if(done) begin
