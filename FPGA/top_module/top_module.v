@@ -40,24 +40,30 @@ reg state;
 
 assign rgb_out = rgb;
 
+clk_reducer slower (
+  .master_clk(clk),
+  .slow_clk(sclk),
+  .reset(reset)
+);
+
 x_bit_mux_2 #(.WIDTH(32)) io_boot (
   .a(ia_bus),
   .b(addr_bus),
-  .s(state),
+  .s(0),
   .out(io_ia_in)
 );
 
 x_bit_mux_2 #(.WIDTH(32)) ram_boot (
   .a(data_bus),
   .b(id_bus),
-  .s(state),
+  .s(0),
   .out(ram_wdata_in)
 );
 
 x_bit_mux_2 #(.WIDTH(32)) cpu_boot (
   .a(id_bus),
   .b(boot_instruct_bus),
-  .s(state),
+  .s(0),
   .out(cpu_id_in)
 );
 
@@ -73,7 +79,7 @@ simple_dual_ram #(.SIZE(32), .DEPTH(4096)) rammy (
 
 
 cpu cpu0 (
-  .clk(clk),
+  .clk(sclk),
   .id(cpu_id_in),
   .mrd(mrd),
   .irq(),
