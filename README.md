@@ -1,6 +1,6 @@
 # RISKY
 
-RISCVOS designed from scratch
+RISCV CPU designed from scratch
 
 Runs at 25Mhz
 
